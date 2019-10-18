@@ -1,0 +1,24 @@
+/*
+ * C++ header for C header uchar.h
+ * Copyright 2015 ARM Limited. All rights reserved.
+ */
+
+#ifndef __cuchar
+#define __cuchar
+
+  #define __UCHAR_NO_EXPORTS 1
+  #include <uchar.h>
+  #undef __UCHAR_NO_EXPORTS
+
+  #undef __uchar_h  // later inclusion of wchar.h must do using std::*
+  #ifdef __EDG_IMPLICIT_USING_STD
+    /* Implicitly include a using directive for the STD namespace when this
+       preprocessing flag is TRUE. */
+       using namespace ::std;
+  #endif /* ifdef __EDG_IMPLICIT_USING_STD */
+
+  #define __STDC_UTF_16__ 1
+  #define __STDC_UTF_32__ 1
+
+#endif /* __cuchar */
+

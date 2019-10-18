@@ -1,0 +1,9 @@
+[target.thumbv6m-none-eabi]
+rustflags = [ 
+  "-C", "opt-level=z",
+  "-C", "relocation-model=ropi",
+  "-C", "link-arg=-Tscript.ld",
+  ]
+
+[build]
+target = "thumbv6m-none-eabi"
