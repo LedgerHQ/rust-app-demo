@@ -17,7 +17,7 @@ CMDS = [
 
 d = getDongle(debug=True)
 for cmd in map(unhexlify,CMDS):
-    r = None
+    r = b'' 
     try:
         r = d.exchange(cmd, 2)
     except Exception as e:
