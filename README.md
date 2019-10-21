@@ -10,6 +10,8 @@ Next, install `bindgen`
 
 `cargo install bindgen`
 
+Building currently requires GCC's header files. Please install an [ARM GCC toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads) and set a `GCC_PATH` environment variable to point to the newly installed folder.
+
 ## Generating the bindings 
 
 Pregenerated bindings to the sdk located in `nanosdk_1.6` were already generated for this project.
@@ -35,7 +37,7 @@ By default, `nanosdk_1.6` will be used if `BOLOS_SDK` is not specified.
 
 One can for example use [speculos](https://github.com/LedgerHQ/speculos)
 
-`python speculos.py ./target/thumbv6m-none-eabi/release/rust-app-demo -k 1.6`
+`cargo run` defaults to running speculos on the generated binary with the appropriate flags.
 
 On a real device, you can use the loading script `load.py`.
 

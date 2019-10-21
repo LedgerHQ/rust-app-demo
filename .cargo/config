@@ -1,9 +1,9 @@
 [target.thumbv6m-none-eabi]
 rustflags = [ 
-  "-C", "opt-level=z",
   "-C", "relocation-model=ropi",
   "-C", "link-arg=-Tscript.ld",
   ]
+runner = "speculos.py -x -k 1.6"
 
 [build]
 target = "thumbv6m-none-eabi"

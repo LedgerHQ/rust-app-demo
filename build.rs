@@ -7,6 +7,7 @@ use std::path::Path;
 
 fn main() {
     let bolos_sdk = env::var("BOLOS_SDK").unwrap_or("./nanosdk_1.6/".to_string());
+    let gcc_toolchain = env::var("GCC_PATH").expect("Please specify a valid GCC toolchain in your GCC_PATH environment variable");
 
     #[cfg(windows)]
     let output = Command::new("python").arg(&format!("./{}/icon3.py", bolos_sdk))
@@ -54,7 +55,7 @@ fn main() {
 
     cc::Build::new()
         .compiler("clang")
-        // .target("thumbv6m-none-eabi")
+        .target("thumbv6m-none-eabi")
         .file("./src/c/src.c")
         .file("./src/c/sjlj.s")
         .file(format!("{}/src/os.c", bolos_sdk))
@@ -101,8 +102,7 @@ fn main() {
         .define("IO_USB_MAX_ENDPOINTS", Some("6"))
         .define("IO_SEPROXYHAL_BUFFER_SIZE_B", Some("128"))
 
-        // Headers taken from the ARMCLANG toolchain in Keil v5
-        .include("./include/")
+        .include(format!("{}/arm-none-eabi/include", gcc_toolchain))
 
         .include(format!("{}/include", bolos_sdk))
         .include(format!("{}/lib_ux/", bolos_sdk))
@@ -127,6 +127,7 @@ fn main() {
         .flag("-mthumb")
         .flag("-fropi")
         .flag("-fno-jump-tables")
+        .flag("-fno-builtin")
         .flag("-fshort-enums")
         .flag("-mno-unaligned-access")
 
