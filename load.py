@@ -1,4 +1,19 @@
 import subprocess
+import os
+
+BOLOS_SDK = os.environ.get("BOLOS_SDK")
+if BOLOS_SDK is None:
+  BOLOS_SDK = "./nanosdk_1.6/"
+
+icon = subprocess.run(
+  [
+    "python",
+    BOLOS_SDK+"icon.py",
+    "rust.gif",
+    "hexbitmaponly"
+    ], check=True, stdout=subprocess.PIPE)
+
+iconhex = icon.stdout
 
 subprocess.run(["cargo", "objcopy", "--bin", "rust-app-demo", "--release", "--", "-O", "ihex", "-S", "app.hex"], check=True)
 
@@ -7,9 +22,6 @@ subprocess.run(
     "python",
     "-m",
     "ledgerblue.loadApp",
-    # "--apdu",
-    "--path",
-    "2147483692/2147483776",
     "--curve",
     "secp256k1",
     "--tlv",
@@ -24,4 +36,6 @@ subprocess.run(
     "\"0.1\"",
     "--dataSize",
     "0",
+    "--icon",
+    iconhex.decode()
   ])
