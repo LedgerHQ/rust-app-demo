@@ -90,8 +90,8 @@ bolos_ux_params_t G_ux_params;
 extern void ui_rs_idle();
 extern void sample_main();
 
-// __attribute__((section(".boot"))) int main(void) {
-int c_main(void) {
+__attribute__((section(".boot")))
+int _start(void) {
   // exit critical section
   __asm volatile("cpsie i");
 
@@ -126,6 +126,7 @@ int c_main(void) {
     }
     END_TRY;
   }
-//   app_exit();
-    return 0;
+
+  os_sched_exit(1);
+  return 0;
 }

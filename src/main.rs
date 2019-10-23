@@ -83,22 +83,6 @@ extern "C" fn sample_main() {
 }
 
 
-#[no_mangle]
-extern "C" {
-    fn c_main();
-}
-
-#[link_section = ".boot"]
-#[no_mangle]
-pub extern "C" fn _start() -> ! {
-    // Main is in C until the try_context can be set properly
-    // from Rust
-    unsafe { c_main() };
-    unsafe { os_sched_exit(1) };
-    loop {}
-}
-
-
 // Below is a sketch for a Rusty 'main'
 // with failed attempts included
 
