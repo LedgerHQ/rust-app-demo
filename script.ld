@@ -93,6 +93,8 @@ SECTIONS
 
   } > SRAM
 
+  ASSERT( (_edata - _data) <= 0, ".data section must be empty" )
+
   .bss :
   {
     /**
