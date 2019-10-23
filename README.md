@@ -7,6 +7,7 @@ This project allows you to develop an app for Nano S in Rust.
 ## Installation
 
 Installation requires adding a toolchain to your Rust installation, and both Clang and arm-gcc.
+The minimum required rustc version is 1.40.0.
 
 - `rustup target add thumbv6m-none-eabi`
 - install [Clang](http://releases.llvm.org/download.html).
