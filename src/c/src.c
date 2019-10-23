@@ -2,6 +2,8 @@
 #include "os_io_seproxyhal.h"
 #include "stdint.h"
 
+uint8_t G_io_seproxyhal_spi_buffer[128];
+
 // Yup...
 size_t strlen(const char * str) {
   char * s = str;

@@ -1,8 +1,5 @@
 use crate::bindings::*;
 
-#[no_mangle]
-pub static mut G_io_seproxyhal_spi_buffer: &[u8] = &[0; 128];
-
 #[derive(Copy, Clone)]
 pub enum StatusWords {
     OK = 0x9000,
