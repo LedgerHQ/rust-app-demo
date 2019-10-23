@@ -11,6 +11,7 @@ pub mod bindings;
 pub mod io;
 pub mod ui;
 use bindings::*;
+use bagls::Bagl;
 
 use core::panic::PanicInfo;
 
@@ -29,6 +30,12 @@ fn sha256(m: &[u8]) -> [u8; 32] {
     out
 }
 
+const bagl_ui_sample_nanos: &[Bagl] = &[
+    Bagl::rectangle((128, 32), BAGL_FILL),
+    Bagl::labelline("Hello World\0", 1, (0, 12), (128, 32)),
+    Bagl::icon(bagls::ICON_CROSS, (3, 12), (7, 7)),
+    Bagl::icon(bagls::ICON_CHECK, (117, 13), (8, 6)),
+];
 #[no_mangle]
 extern "C" fn sample_main() {
     let mut tx = 0u16;
@@ -72,6 +79,12 @@ extern "C" fn sample_main() {
                     unsafe { G_io_apdu_buffer[i] = *e };
                 }
                 io::set_status_word(32, io::StatusWords::OK)
+            },
+            0x04 => {
+                for e in bagl_ui_sample_nanos {
+                    unsafe{ io_seproxyhal_display(e) };
+                }
+                io::set_status_word(tx, io::StatusWords::OK)
             },
             0xff => {
                 unsafe { os_sched_exit(0) };

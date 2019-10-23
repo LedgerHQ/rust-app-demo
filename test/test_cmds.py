@@ -8,6 +8,7 @@ from binascii import hexlify,unhexlify
 CMDS = [
     "800100aabbaabb",
     "800200aabbaabb",
+    "800400aabbaabb",
     "80032000" + "aa"*32,
     "80032000" + "bb"*32,
     "7700",

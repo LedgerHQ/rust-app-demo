@@ -85,7 +85,7 @@ pub extern "C" fn ui_rs_idle() {
   const steps: [*const ux_flow_step_t;5] = [
       &nn_step!("This App", "is in Rust"),
       &nn_step!("and this is", "a 'flow' menu"),
-      &nn_step!("introduced in", "SDK 1.6   "),
+      &nn_step!("introduced in", "SDK 1.6"),
       &nn_cb_step!("", "Quit", &exit_step),
       FLOW_STEP_END
     ];
