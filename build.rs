@@ -55,7 +55,7 @@ fn main() {
 
     cc::Build::new()
         .compiler("clang")
-        .archiver("arm-none-eabi-gcc-ar")
+        .archiver("arm-none-eabi-ar")
         .target("thumbv6m-none-eabi")
         .file("./src/c/src.c")
         .file("./src/c/sjlj.s")
