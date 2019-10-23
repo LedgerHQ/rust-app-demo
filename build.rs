@@ -55,6 +55,7 @@ fn main() {
 
     cc::Build::new()
         .compiler("clang")
+        .archiver("arm-none-eabi-gcc-ar")
         .target("thumbv6m-none-eabi")
         .file("./src/c/src.c")
         .file("./src/c/sjlj.s")
@@ -119,6 +120,7 @@ fn main() {
         .pic(true)
         .flag("--target=thumbv6m-none-eabi")
         .flag("-fomit-frame-pointer")
+        .flag("-momit-leaf-frame-pointer")
         .flag("-mcpu=cortex-m0")
         .flag("-fno-common")
         .flag("-fdata-sections")
