@@ -76,9 +76,9 @@ fn main() {
 
         .file(format!("{}/lib_ux/glyphs/glyphs.c", bolos_sdk))
         .file(format!("{}/lib_stusb/usbd_conf.c", bolos_sdk))
-        .file(format!("{}/lib_stusb/STM32_USB_Device_library/Core/Src/usbd_core.c", bolos_sdk))
-        .file(format!("{}/lib_stusb/STM32_USB_Device_library/Core/Src/usbd_ctlreq.c", bolos_sdk))
-        .file(format!("{}/lib_stusb/STM32_USB_Device_library/Core/Src/usbd_ioreq.c", bolos_sdk))
+        .file(format!("{}/lib_stusb/STM32_USB_Device_Library/Core/Src/usbd_core.c", bolos_sdk))
+        .file(format!("{}/lib_stusb/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c", bolos_sdk))
+        .file(format!("{}/lib_stusb/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c", bolos_sdk))
         .file(format!("{}/lib_stusb_impl/usbd_impl.c", bolos_sdk))
         .file(format!("{}/lib_stusb/STM32_USB_Device_Library/Class/HID/Src/usbd_hid.c", bolos_sdk))
 
