@@ -1,12 +1,17 @@
 
 pub struct Flow<'a> {
   source: &'a str,
+  // Page count is calculated in new() and cached in the structure.
   page_count: u8
 }
 
 pub struct PageLineIterator<'a> {
   lines_iterator: core::str::Lines<'a>,
   ended: bool
+}
+
+pub struct PageBaglIterator<'a> {
+  lines_iterator: PageLineIterator<'a>
 }
 
 /// Calculate the number of page in a given markdown.
@@ -30,11 +35,15 @@ impl Flow<'_> {
     }
   }
 
+  /// Iterator to the lines in a given page.
+  /// * `page` - Page index. If too big, the iterator will iterate over nothing.
   pub fn lines_in_page<'a>(&'a self, page: u8)
   -> PageLineIterator<'a> {
     PageLineIterator::new(self.source, page)
   }
 
+  /// Return the number of pages in the flow. This value is calculated by
+  /// parsing the markdown code during new() and cached in the structure.
   pub fn page_count(self) -> u8 {
     self.page_count
   }
@@ -87,6 +96,19 @@ impl<'a> Iterator for PageLineIterator<'a> {
     }
   }
 }
+
+impl PageBaglIterator<'_> {
+  fn new<'a>(source: &'a str, page: u8) -> PageBaglIterator<'a> {
+    PageBaglIterator {
+      lines_iterator: PageLineIterator::new(source, page)
+    }
+  }
+}
+
+//impl<'a> Iterator for PageBaglIterator<'a> {
+  //type Item = 
+  // TODO
+//}
 
 #[cfg(test)]
 mod tests {
