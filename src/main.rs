@@ -11,7 +11,7 @@ pub mod bindings;
 pub mod io;
 pub mod ui;
 use bindings::*;
-use bagls::{Bagl, BaglTrait, Rect};
+use bagls::{Bagl, Rect};
 
 use core::panic::PanicInfo;
 
@@ -35,13 +35,19 @@ extern "C" fn sample_main() {
     let mut tx = 0u16;
     let mut flags = 0u8;
 
-    let bagl_ui_sample_nanos: &[Bagl] = &[
-        Bagl::from(Rect::new().pos(32, 32)
-                              .dims(20,20)),
+    // const bagl_ui_sample_nanos: &[Bagl::RECT] = &[
+    const bagl_ui_sample_nanos: &[Rect] = &[
+        Rect::new().pos(32, 32).dims(20, 20),
+        Rect::new().pos(10, 64).dims(10, 30),
+    ];
+
+    // let bagl_ui_sample_nanos: &[Bagl] = &[
+        // Bagl::from(Rect::new().pos(32, 32)
+                            //   .dims(20,20)),
         //Bagl::labelline("Hello World\0", 1, (0, 12), (128, 32)),
         //Bagl::icon(bagls::ICON_CROSS, (3, 12), (7, 7)),
         //Bagl::icon(bagls::ICON_CHECK, (117, 13), (8, 6)),
-    ];
+    // ];
 
     loop {
         let mut rx = tx;
@@ -83,8 +89,8 @@ extern "C" fn sample_main() {
                 io::set_status_word(32, io::StatusWords::OK)
             },
             0x04 => {
-                for e in bagl_ui_sample_nanos {
-                    unsafe{ io_seproxyhal_display(e) };
+                for e in bagl_ui_sample_nanos.iter() {
+                    unsafe{ io_seproxyhal_display(&bagl_element_t::from(*e)) };
                 }
                 io::set_status_word(tx, io::StatusWords::OK)
             },

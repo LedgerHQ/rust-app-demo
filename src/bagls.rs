@@ -4,14 +4,7 @@ const FULL: u32 = 0xffffff;
 pub const ICON_CROSS: u8 = BAGL_GLYPH_ICON_CROSS as u8;
 pub const ICON_CHECK: u8 = BAGL_GLYPH_ICON_CHECK as u8;
 
-pub trait BaglTrait {
-  fn new() -> Self;
-  fn pos(self, x: u16, y: u16) -> Self;
-  fn colors(self, fg: u32, bg: u32) -> Self;
-  fn dims(self, w: u16, h: u16) -> Self;
-  fn userid(self, id: u8) -> Self;
-}
-
+#[derive(Copy, Clone)]
 pub struct Rect {
   pub pos: (u16,u16),
   pub dims: (u16,u16),
@@ -49,20 +42,20 @@ pub enum Bagl {
   CIRCLE(Circle),
 }
 
-impl BaglTrait for Button {
-  fn new() -> Button {
+impl Button {
+  pub const fn new() -> Button {
     Button {}
   }
 }
 
-impl BaglTrait for Label {
-  fn new() -> Label {
+impl Label {
+  pub const fn new() -> Label {
     Label {}
   }
 }
 
-impl BaglTrait for LabelLine {
-  fn new() -> LabelLine {
+impl LabelLine {
+  pub const fn new() -> LabelLine {
     LabelLine {
       pos: (0, 0),
       dims: (0, 0)
@@ -70,33 +63,33 @@ impl BaglTrait for LabelLine {
   }
 }
 
-impl BaglTrait for Rect {
-  fn new() -> Rect {
+impl Rect {
+  pub const fn new() -> Rect {
     Rect {pos: (32-5, 64-5), dims: (10,10), colors: (FULL, 0), fill:true, userid:0}
   }
 
-  fn pos(self, x: u16, y: u16) -> Rect {
+  pub const fn  pos(self, x: u16, y: u16) -> Rect {
     Rect {pos: (x,y), ..self}
   }
 
-  fn colors(self, fg: u32, bg: u32) -> Rect {
+  pub const fn  colors(self, fg: u32, bg: u32) -> Rect {
     Rect {colors: (fg,bg), ..self}
   }
-  fn dims(self, w: u16, h: u16) -> Rect {
+  pub const fn  dims(self, w: u16, h: u16) -> Rect {
     Rect {dims: (w,h), ..self}
   }
-  fn userid(self, id: u8) -> Rect {
+  pub const fn  userid(self, id: u8) -> Rect {
     Rect {userid: id, ..self}
   }
 }
 
-impl BaglTrait for Line {
+impl Line {
   fn new() -> Line {
     Line {}
   }
 }
 
-impl BaglTrait for Icon {
+impl Icon {
   fn new() -> Icon {
     Icon {
       pos: (0, 0),
@@ -105,11 +98,15 @@ impl BaglTrait for Icon {
   }
 }
 
-impl BaglTrait for Circle {
+impl Circle {
   fn new() -> Circle {
     Circle {}
   }
 }
+
+// impl From<Bagl> for bagl_element_t {
+//   bagl_element_t {
+// }
 
 impl From<Rect> for bagl_element_t {
   fn from(rect: Rect) -> bagl_element_t {
