@@ -1,7 +1,5 @@
 use crate::bindings::*;
 
-pub type Bagl = bagl_element_t;
-
 const FULL: u32 = 0xffffff;
 pub const ICON_CROSS: u8 = BAGL_GLYPH_ICON_CROSS as u8;
 pub const ICON_CHECK: u8 = BAGL_GLYPH_ICON_CHECK as u8;
@@ -11,106 +9,164 @@ pub trait BaglTrait {
 }
 
 pub struct Rect {
-  pub dims: (u16,u16),
-  pub fill: bool
+  pub pos: (i16, i16),
+  pub dims: (u16, u16),
+  pub fill: bool,
+}
+
+pub struct Button {}
+
+pub struct Label {
+}
+
+pub struct LabelLine {
+  pub pos: (i16, i16),
+  pub dims: (u16, u16)
+}
+
+pub struct Line {}
+
+pub struct Icon {
+  pub pos: (i16, i16),
+  pub glyph_id: u8
+}
+
+pub struct Circle {}
+
+pub enum Bagl {
+  BUTTON(Button),
+  LABEL(Label),
+  LABELLINE(LabelLine),
+  RECT(Rect),
+  LINE(Line),
+  ICON(Icon),
+  CIRCLE(Circle),
+}
+
+impl BaglTrait for Button {
+  fn new() -> Button {
+    Button {}
+  }
+}
+
+impl BaglTrait for Label {
+  fn new() -> Label {
+    Label {}
+  }
+}
+
+impl BaglTrait for LabelLine {
+  fn new() -> LabelLine {
+    LabelLine {
+      pos: (0, 0),
+      dims: (0, 0)
+    }
+  }
 }
 
 impl BaglTrait for Rect {
   fn new() -> Rect {
-    Rect {dims: (10,10), fill:true}
+    Rect {
+      pos: (0, 0),
+      dims: (10, 10),
+      fill: true,
+    }
   }
 }
 
-impl From<Rect> for Bagl {
-    fn from(rect: Rect)-> Bagl {
-      Bagl { 
-        component : bagl_component_t { 
-          type_:  BAGL_RECTANGLE,
-          userid: 0,
-          x: 0, y:0,
-          width: rect.dims.0,
-          height: rect.dims.1,
-          stroke:0,
-          radius:0,
-          fill: rect.fill as u8,
-          fgcolor: FULL,
-          bgcolor: 0,
-          font_id: 0,
-          icon_id: 0,
-        },
-        text: core::ptr::null() 
-      }
-    }
+impl BaglTrait for Line {
+  fn new() -> Line {
+    Line {}
+  }
 }
 
-impl Bagl {
-  // Instead of initializing everything, we'd rather use
-  // ..Default::default(), but as this is a const fn, 
-  // it is not allowed
-  pub const fn rectangle(dims: (u16, u16), fill: u32) -> Bagl {
-    Bagl { 
-      component : bagl_component_t { 
-        type_:  BAGL_RECTANGLE,
-        userid: 0,
-        x: 0, y:0,
-        width: dims.0,
-        height: dims.1,
-        stroke:0,
-        radius:0,
-        fill: fill as u8,
-        fgcolor: 0,
-        bgcolor: FULL,
+impl BaglTrait for Icon {
+  fn new() -> Icon {
+    Icon {
+      pos: (0, 0),
+      glyph_id: 0
+    }
+  }
+}
+
+impl BaglTrait for Circle {
+  fn new() -> Circle {
+    Circle {}
+  }
+}
+
+
+impl From<Rect> for bagl_element_t {
+  fn from(rect: Rect) -> bagl_element_t {
+    bagl_element_t {
+      component: bagl_component_t {
+        type_: BAGL_RECTANGLE,
+        userid: 0,  // FIXME
+        x: 0,
+        y: 0,
+        width: rect.dims.0,
+        height: rect.dims.1,
+        stroke: 0,
+        radius: 0,
+        fill: rect.fill as u8,
+        fgcolor: FULL,
+        bgcolor: 0,
         font_id: 0,
         icon_id: 0,
       },
-      text: core::ptr::null() 
+      text: core::ptr::null(),
     }
   }
+}
 
-  pub const fn labelline(text: &str, userid: u8, pos: (i16, i16), dims: (u16, u16)) -> Bagl {
-    Bagl { 
-      component : bagl_component_t { 
-        type_:  BAGL_LABELINE,
-        userid: userid,
-        x: pos.0,
-        y: pos.1,
-        width: dims.0,
-        height: dims.1,
+impl From<LabelLine> for bagl_element_t {
+  fn from(labelline: LabelLine) -> bagl_element_t {
+    bagl_element_t {
+      component: bagl_component_t {
+        type_: BAGL_LABELINE,
+        userid: 0,  // FIXME
+        x: labelline.pos.0,
+        y: labelline.pos.1,
+        width: labelline.dims.0,
+        height: labelline.dims.1,
         stroke: 0,
         radius: 0,
         fill: 0,
-        fgcolor: FULL, 
-        bgcolor: 0, 
-        font_id: BAGL_FONT_OPEN_SANS_REGULAR_11px as u16 | BAGL_FONT_ALIGNMENT_CENTER as u16, 
+        fgcolor: FULL,
+        bgcolor: 0,
+        font_id: BAGL_FONT_OPEN_SANS_REGULAR_11px as u16 | BAGL_FONT_ALIGNMENT_CENTER as u16,
         icon_id: 0,
       },
-      text: text.as_ptr()
+      // text: labelline.text.as_ptr(),  FIXME
+      text: core::ptr::null(),
     }
   }
-  
-  pub const fn icon(icon: u8, pos: (i16,i16), dims: (u16,u16)) -> Bagl {
-    Bagl { 
-      component : bagl_component_t { 
-        type_:  BAGL_ICON,
+}
+
+impl From<Icon> for bagl_element_t {
+  fn from(icon: Icon) -> bagl_element_t {
+    bagl_element_t {
+      component: bagl_component_t {
+        type_: BAGL_ICON,
         userid: 0,
-        x: pos.0,
-        y: pos.1,
-        width: dims.0,
-        height: dims.1,
-        stroke:0,
-        radius:0,
+        x: icon.pos.0,
+        y: icon.pos.1,
+        width: 0,
+        height: 0,
+        stroke: 0,
+        radius: 0,
         fill: 0,
         fgcolor: FULL,
         bgcolor: 0,
         font_id: 0,
-        icon_id: icon,
+        icon_id: icon.glyph_id,
       },
-      text: core::ptr::null() 
+      text: core::ptr::null(),
     }
   }
 }
 
-// fn ui_idle(uxx: &mut ux_state_t) { 
+// fn ui_idle(uxx: &mut ux_state_t) {
 //   // UX_DISPLAY(bagl_ui_sample_nanos, NULL);
 
 //   const bagl_ui_sample_nanos: &[Bagl] = &[
@@ -119,25 +175,24 @@ impl Bagl {
 //     Bagl::icon(bagls::ICON_CROSS, (3, 12), (7, 7)),
 //     Bagl::icon(bagls::ICON_CHECK, (117, 13), (8, 6)),
 //   ];
-  
 //   uxx.elements = &bagl_ui_sample_nanos[0];
 //   uxx.elements_count = bagl_ui_sample_nanos.len() as u32;
 //   uxx.button_push_handler = Some(bagl_ui_sample_nanos_button);
-//   uxx.elements_preprocessor = None; 
+//   uxx.elements_preprocessor = None;
 //   uxx.params.ux_id = BOLOS_UX_WAKE_UP; // UX_WAKE_UP();
 //   uxx.params.len = 0;
 
 //   unsafe{
 //       uxx.params.len = os_ux(&mut uxx.params);
 //       ux_check_status(uxx.params.len);
-//       io_seproxyhal_init_ux(); // UX_REDISPLAY() UX_REDISPLAY_INDEX(0) 
+//       io_seproxyhal_init_ux(); // UX_REDISPLAY() UX_REDISPLAY_INDEX(0)
 //       io_seproxyhal_init_button();
 //   }
 
 //   uxx.elements_current = 0;
-//   if uxx.params.len != BOLOS_UX_IGNORE && uxx.params.len != BOLOS_UX_CONTINUE 
+//   if uxx.params.len != BOLOS_UX_IGNORE && uxx.params.len != BOLOS_UX_CONTINUE
 //   {   //UX_DISPLAY_NEXT_ELEMENT();
-//     //   while uxx.elements_current < uxx.elements_count && unsafe{ io_seproxyhal_spi_is_status_sent() } == 0 
+//     //   while uxx.elements_current < uxx.elements_count && unsafe{ io_seproxyhal_spi_is_status_sent() } == 0
 //     //   {
 //     //       let element = &bagl_ui_sample_nanos[uxx.elements_current as usize];
 //     //       unsafe{ io_seproxyhal_display(element) };
