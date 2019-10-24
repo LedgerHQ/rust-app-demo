@@ -8,39 +8,60 @@ pub const ICON_CHECK: u8 = BAGL_GLYPH_ICON_CHECK as u8;
 
 pub trait BaglTrait {
   fn new() -> Self;
+  fn pos(self, x: u16, y: u16) -> Self;
+  fn colors(self, fg: u32, bg: u32) -> Self;
+  fn dims(self, w: u16, h: u16) -> Self;
+  fn userid(self, id: u8) -> Self;
 }
 
 pub struct Rect {
+  pub pos: (u16,u16),
   pub dims: (u16,u16),
-  pub fill: bool
+  pub colors: (u32, u32), 
+  pub fill: bool,
+  pub userid: u8
 }
 
 impl BaglTrait for Rect {
   fn new() -> Rect {
-    Rect {dims: (10,10), fill:true}
+    Rect {pos: (32-5, 64-5), dims: (10,10), colors: (FULL, 0), fill:true, userid:0}
+  }
+
+  fn pos(self, x: u16, y: u16) -> Rect {
+    Rect {pos: (x,y), ..self}
+  }
+
+  fn colors(self, fg: u32, bg: u32) -> Rect {
+    Rect {colors: (fg,bg), ..self}
+  }
+  fn dims(self, w: u16, h: u16) -> Rect {
+    Rect {dims: (w,h), ..self}
+  }
+  fn userid(self, id: u8) -> Rect {
+    Rect {userid: id, ..self}
   }
 }
 
 impl From<Rect> for Bagl {
-    fn from(rect: Rect)-> Bagl {
-      Bagl { 
-        component : bagl_component_t { 
-          type_:  BAGL_RECTANGLE,
-          userid: 0,
-          x: 0, y:0,
-          width: rect.dims.0,
-          height: rect.dims.1,
-          stroke:0,
-          radius:0,
-          fill: rect.fill as u8,
-          fgcolor: FULL,
-          bgcolor: 0,
-          font_id: 0,
-          icon_id: 0,
-        },
-        text: core::ptr::null() 
-      }
+  fn from(rect: Rect)-> Bagl {
+    Bagl { 
+      component : bagl_component_t { 
+        type_:  BAGL_RECTANGLE,
+        userid: 0,
+        x: 0, y:0,
+        width: rect.dims.0,
+        height: rect.dims.1,
+        stroke:0,
+        radius:0,
+        fill: rect.fill as u8,
+        fgcolor: FULL,
+        bgcolor: 0,
+        font_id: 0,
+        icon_id: 0,
+      },
+      text: core::ptr::null() 
     }
+  }
 }
 
 impl Bagl {

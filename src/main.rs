@@ -11,7 +11,7 @@ pub mod bindings;
 pub mod io;
 pub mod ui;
 use bindings::*;
-use bagls::{Bagl, Rect};
+use bagls::{Bagl, BaglTrait, Rect};
 
 use core::panic::PanicInfo;
 
@@ -36,7 +36,8 @@ extern "C" fn sample_main() {
     let mut flags = 0u8;
 
     let bagl_ui_sample_nanos: &[Bagl] = &[
-        Bagl::from(Rect{dims:(18,32), fill:true}),
+        Bagl::from(Rect::new().pos(32, 32)
+                              .dims(20,20)),
         Bagl::labelline("Hello World\0", 1, (0, 12), (128, 32)),
         Bagl::icon(bagls::ICON_CROSS, (3, 12), (7, 7)),
         Bagl::icon(bagls::ICON_CHECK, (117, 13), (8, 6)),
