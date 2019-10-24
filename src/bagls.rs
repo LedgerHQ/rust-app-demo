@@ -6,12 +6,18 @@ pub const ICON_CHECK: u8 = BAGL_GLYPH_ICON_CHECK as u8;
 
 pub trait BaglTrait {
   fn new() -> Self;
+  fn pos(self, x: u16, y: u16) -> Self;
+  fn colors(self, fg: u32, bg: u32) -> Self;
+  fn dims(self, w: u16, h: u16) -> Self;
+  fn userid(self, id: u8) -> Self;
 }
 
 pub struct Rect {
-  pub pos: (i16, i16),
-  pub dims: (u16, u16),
+  pub pos: (u16,u16),
+  pub dims: (u16,u16),
+  pub colors: (u32, u32), 
   pub fill: bool,
+  pub userid: u8
 }
 
 pub struct Button {}
@@ -66,11 +72,21 @@ impl BaglTrait for LabelLine {
 
 impl BaglTrait for Rect {
   fn new() -> Rect {
-    Rect {
-      pos: (0, 0),
-      dims: (10, 10),
-      fill: true,
-    }
+    Rect {pos: (32-5, 64-5), dims: (10,10), colors: (FULL, 0), fill:true, userid:0}
+  }
+
+  fn pos(self, x: u16, y: u16) -> Rect {
+    Rect {pos: (x,y), ..self}
+  }
+
+  fn colors(self, fg: u32, bg: u32) -> Rect {
+    Rect {colors: (fg,bg), ..self}
+  }
+  fn dims(self, w: u16, h: u16) -> Rect {
+    Rect {dims: (w,h), ..self}
+  }
+  fn userid(self, id: u8) -> Rect {
+    Rect {userid: id, ..self}
   }
 }
 
@@ -94,7 +110,6 @@ impl BaglTrait for Circle {
     Circle {}
   }
 }
-
 
 impl From<Rect> for bagl_element_t {
   fn from(rect: Rect) -> bagl_element_t {
