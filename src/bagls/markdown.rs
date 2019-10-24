@@ -5,13 +5,9 @@ pub struct Flow<'a> {
 }
 
 pub struct FlowSourceIterator<'a> {
-  source: &'a str,
-  page: u8,  // The page in which we want to iterate
   lines_iterator: core::str::Lines<'a>,
   ended: bool
 }
-
-const FLOW_MAX_PAGE_COUNT: usize = 16;
 
 /// Calculate the number of page in a given markdown.
 /// * `source` - Markdown code.
@@ -50,8 +46,6 @@ impl FlowSourceIterator<'_> {
   pub fn new<'a>(source: &'a str, page: u8) -> FlowSourceIterator<'a> {
     // Initialize the line iterator and find the start of the page.
     let mut fsi = FlowSourceIterator {
-        source: source,
-        page: page,
         lines_iterator: source.lines(),
         ended: false };
     let mut actual_page: u8 = 0;
@@ -98,7 +92,7 @@ impl<'a> Iterator for FlowSourceIterator<'a> {
 mod tests {
   use super::*;
 
-  const test_md: &str = concat!(
+  const TEST_MD: &str = concat!(
     "page 0 line 0\n",
     "page 0 line 1\n",
     "---\n",
@@ -112,7 +106,7 @@ mod tests {
 
   #[test]
   fn test_source_flow_iterator() {
-    let flow = Flow::new(test_md);
+    let flow = Flow::new(TEST_MD);
     assert_eq!(
       flow.lines_in_page(0).collect::<Vec<&str>>(),
       ["page 0 line 0", "page 0 line 1"]
@@ -129,7 +123,7 @@ mod tests {
 
   #[test]
   fn test_page_count() {
-    assert_eq!(Flow::new(test_md).page_count, 3);
+    assert_eq!(Flow::new(TEST_MD).page_count, 3);
     assert_eq!(Flow::new("").page_count, 1);
     assert_eq!(Flow::new("---").page_count, 2);
     assert_eq!(Flow::new("---\n---").page_count, 3);
