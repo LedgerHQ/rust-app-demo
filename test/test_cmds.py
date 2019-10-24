@@ -6,14 +6,14 @@ from ledgerblue.commTCP import getDongle
 from binascii import hexlify,unhexlify
 
 CMDS = [
-    "800100aabbaabb",
-    "800200aabbaabb",
-    "800400aabbaabb",
-    "80032000" + "aa"*32,
-    "80032000" + "bb"*32,
-    "7700",
-    "806600",
-    "FF00"
+    # "800100aabbaabb",
+    # "800200aabbaabb",
+    "8004",
+    # "80032000" + "aa"*32,
+    # "80032000" + "bb"*32,
+    # "7700",
+    # "806600",
+    # "FF00"
 ]
 
 d = getDongle(debug=True)

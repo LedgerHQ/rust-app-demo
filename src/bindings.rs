@@ -5597,7 +5597,7 @@ pub struct application_s {
     pub data_length: cty::c_uint,
     pub params_length: cty::c_uint,
     pub sha256_code_data: [cty::c_uchar; 32usize],
-    pub sha256_full: [cty::c_uchar; 32usize],
+    pub sha256_0xffffffu32: [cty::c_uchar; 32usize],
 }
 #[test]
 fn bindgen_test_layout_application_s() {
@@ -5692,13 +5692,13 @@ fn bindgen_test_layout_application_s() {
         )
     );
     assert_eq!(
-        unsafe { &(*(::core::ptr::null::<application_s>())).sha256_full as *const _ as usize },
+        unsafe { &(*(::core::ptr::null::<application_s>())).sha256_0xffffffu32 as *const _ as usize },
         60usize,
         concat!(
             "Offset of field: ",
             stringify!(application_s),
             "::",
-            stringify!(sha256_full)
+            stringify!(sha256_0xffffffu32)
         )
     );
 }
