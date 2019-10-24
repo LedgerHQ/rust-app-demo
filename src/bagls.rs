@@ -6,6 +6,43 @@ const FULL: u32 = 0xffffff;
 pub const ICON_CROSS: u8 = BAGL_GLYPH_ICON_CROSS as u8;
 pub const ICON_CHECK: u8 = BAGL_GLYPH_ICON_CHECK as u8;
 
+pub trait BaglTrait {
+  fn new() -> Self;
+}
+
+pub struct Rect {
+  pub dims: (u16,u16),
+  pub fill: bool
+}
+
+impl BaglTrait for Rect {
+  fn new() -> Rect {
+    Rect {dims: (10,10), fill:true}
+  }
+}
+
+impl From<Rect> for Bagl {
+    fn from(rect: Rect)-> Bagl {
+      Bagl { 
+        component : bagl_component_t { 
+          type_:  BAGL_RECTANGLE,
+          userid: 0,
+          x: 0, y:0,
+          width: rect.dims.0,
+          height: rect.dims.1,
+          stroke:0,
+          radius:0,
+          fill: rect.fill as u8,
+          fgcolor: FULL,
+          bgcolor: 0,
+          font_id: 0,
+          icon_id: 0,
+        },
+        text: core::ptr::null() 
+      }
+    }
+}
+
 impl Bagl {
   // Instead of initializing everything, we'd rather use
   // ..Default::default(), but as this is a const fn, 
