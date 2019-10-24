@@ -35,16 +35,16 @@ impl FlowSourceIterator<'_> {
         page: page,
         lines_iterator: source.lines(),
         ended: false };
-    let mut actual_page: i16 = -1;
+    let mut actual_page: u8 = 0;
     loop {
+      if actual_page >= page {
+        break;
+      }
       let n = fsi.lines_iterator.next();
       match n {
         Some(v) => {
           if v == "---" {
             actual_page += 1;
-            if actual_page == page as i16 {
-              break;
-            }
           }
         },
         None => { fsi.ended = true; }
@@ -83,7 +83,6 @@ mod tests {
   fn test_source_flow_iterator() {
     let flow = Flow::new(
       concat!(
-        "---\n",
         "page 0 line 0\n",
         "page 0 line 1\n",
         "---\n",
@@ -93,7 +92,6 @@ mod tests {
         "page 2 line 0\n",
         "page 2 line 1\n",
         "page 2 line 2\n",
-        "---\n"
       )
     );
     assert_eq!(
