@@ -4,7 +4,7 @@ pub struct Flow<'a> {
   page_count: u8
 }
 
-pub struct FlowSourceIterator<'a> {
+pub struct PageLineIterator<'a> {
   lines_iterator: core::str::Lines<'a>,
   ended: bool
 }
@@ -31,8 +31,8 @@ impl Flow<'_> {
   }
 
   pub fn lines_in_page<'a>(&'a self, page: u8)
-  -> FlowSourceIterator<'a> {
-    FlowSourceIterator::new(self.source, page)
+  -> PageLineIterator<'a> {
+    PageLineIterator::new(self.source, page)
   }
 
   pub fn page_count(self) -> u8 {
@@ -40,12 +40,12 @@ impl Flow<'_> {
   }
 }
 
-impl FlowSourceIterator<'_> {
+impl PageLineIterator<'_> {
   /// * `source` - Markdown source
   /// * `page` - The page we want to iterate
-  pub fn new<'a>(source: &'a str, page: u8) -> FlowSourceIterator<'a> {
+  pub fn new<'a>(source: &'a str, page: u8) -> PageLineIterator<'a> {
     // Initialize the line iterator and find the start of the page.
-    let mut fsi = FlowSourceIterator {
+    let mut fsi = PageLineIterator {
         lines_iterator: source.lines(),
         ended: false };
     let mut actual_page: u8 = 0;
@@ -67,7 +67,7 @@ impl FlowSourceIterator<'_> {
   }
 }
 
-impl<'a> Iterator for FlowSourceIterator<'a> {
+impl<'a> Iterator for PageLineIterator<'a> {
   type Item = &'a str;
 
   fn next(&mut self) -> Option<&'a str> {
