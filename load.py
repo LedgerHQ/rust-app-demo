@@ -3,7 +3,7 @@ import os
 
 BOLOS_SDK = os.environ.get("BOLOS_SDK")
 if BOLOS_SDK is None:
-  BOLOS_SDK = "./nanosdk_1.6/"
+  BOLOS_SDK = "./nanos-secure-sdk/"
 
 icon = subprocess.run(
   [

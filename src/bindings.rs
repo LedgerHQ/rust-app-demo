@@ -91,11 +91,6 @@ pub const __SC300_REV: u32 = 1;
 pub const __NVIC_PRIO_BITS: u32 = 2;
 pub const __Vendor_SysTickConfig: u32 = 0;
 pub const NVM_ERASED_WORD_VALUE: u32 = 4294967295;
-pub const __SC000_CMSIS_VERSION_MAIN: u32 = 3;
-pub const __SC000_CMSIS_VERSION_SUB: u32 = 1;
-pub const __SC000_CMSIS_VERSION: u32 = 196609;
-pub const __CORTEX_SC: u32 = 0;
-pub const __FPU_USED: u32 = 0;
 pub const _STDINT_H: u32 = 1;
 pub const _FEATURES_H: u32 = 1;
 pub const _DEFAULT_SOURCE: u32 = 1;
@@ -179,6 +174,11 @@ pub const SIG_ATOMIC_MAX: u32 = 2147483647;
 pub const SIZE_MAX: u32 = 4294967295;
 pub const WINT_MIN: u32 = 0;
 pub const WINT_MAX: u32 = 4294967295;
+pub const __SC000_CMSIS_VERSION_MAIN: u32 = 3;
+pub const __SC000_CMSIS_VERSION_SUB: u32 = 1;
+pub const __SC000_CMSIS_VERSION: u32 = 196609;
+pub const __CORTEX_SC: u32 = 0;
+pub const __FPU_USED: u32 = 0;
 pub const SCB_CPUID_IMPLEMENTER_Pos: u32 = 24;
 pub const SCB_CPUID_IMPLEMENTER_Msk: u32 = 4278190080;
 pub const SCB_CPUID_VARIANT_Pos: u32 = 20;
@@ -907,6 +907,50 @@ extern "C" {
 }
 extern "C" {
     pub fn setjmp(__jmpb: *mut cty::c_uint) -> cty::c_int;
+}
+pub type wchar_t = cty::c_uint;
+#[repr(C)]
+#[derive(Default, Copy, Clone)]
+pub struct max_align_t {
+    pub __clang_max_align_nonce1: cty::c_longlong,
+    pub __clang_max_align_nonce2: f64,
+}
+#[test]
+fn bindgen_test_layout_max_align_t() {
+    assert_eq!(
+        ::core::mem::size_of::<max_align_t>(),
+        16usize,
+        concat!("Size of: ", stringify!(max_align_t))
+    );
+    assert_eq!(
+        ::core::mem::align_of::<max_align_t>(),
+        8usize,
+        concat!("Alignment of ", stringify!(max_align_t))
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::core::ptr::null::<max_align_t>())).__clang_max_align_nonce1 as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(max_align_t),
+            "::",
+            stringify!(__clang_max_align_nonce1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::core::ptr::null::<max_align_t>())).__clang_max_align_nonce2 as *const _ as usize
+        },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(max_align_t),
+            "::",
+            stringify!(__clang_max_align_nonce2)
+        )
+    );
 }
 pub type __u_char = cty::c_uchar;
 pub type __u_short = cty::c_ushort;
@@ -2007,50 +2051,6 @@ fn bindgen_test_layout_SysTick_Type() {
         )
     );
 }
-pub type wchar_t = cty::c_uint;
-#[repr(C)]
-#[derive(Default, Copy, Clone)]
-pub struct max_align_t {
-    pub __clang_max_align_nonce1: cty::c_longlong,
-    pub __clang_max_align_nonce2: f64,
-}
-#[test]
-fn bindgen_test_layout_max_align_t() {
-    assert_eq!(
-        ::core::mem::size_of::<max_align_t>(),
-        16usize,
-        concat!("Size of: ", stringify!(max_align_t))
-    );
-    assert_eq!(
-        ::core::mem::align_of::<max_align_t>(),
-        8usize,
-        concat!("Alignment of ", stringify!(max_align_t))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::core::ptr::null::<max_align_t>())).__clang_max_align_nonce1 as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(max_align_t),
-            "::",
-            stringify!(__clang_max_align_nonce1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::core::ptr::null::<max_align_t>())).__clang_max_align_nonce2 as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(max_align_t),
-            "::",
-            stringify!(__clang_max_align_nonce2)
-        )
-    );
-}
 extern "C" {
     pub fn pic(linked_address: cty::c_uint) -> cty::c_uint;
 }
@@ -2392,87 +2392,6 @@ extern "C" {
     ) -> cty::c_int;
 }
 #[repr(C)]
-#[derive(Copy, Clone)]
-pub struct cx_sha512_s {
-    pub header: cx_hash_header_s,
-    pub blen: cty::c_uint,
-    pub block: [cty::c_uchar; 128usize],
-    pub acc: [cty::c_uchar; 64usize],
-}
-#[test]
-fn bindgen_test_layout_cx_sha512_s() {
-    assert_eq!(
-        ::core::mem::size_of::<cx_sha512_s>(),
-        204usize,
-        concat!("Size of: ", stringify!(cx_sha512_s))
-    );
-    assert_eq!(
-        ::core::mem::align_of::<cx_sha512_s>(),
-        4usize,
-        concat!("Alignment of ", stringify!(cx_sha512_s))
-    );
-    assert_eq!(
-        unsafe { &(*(::core::ptr::null::<cx_sha512_s>())).header as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cx_sha512_s),
-            "::",
-            stringify!(header)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::core::ptr::null::<cx_sha512_s>())).blen as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cx_sha512_s),
-            "::",
-            stringify!(blen)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::core::ptr::null::<cx_sha512_s>())).block as *const _ as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cx_sha512_s),
-            "::",
-            stringify!(block)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::core::ptr::null::<cx_sha512_s>())).acc as *const _ as usize },
-        140usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cx_sha512_s),
-            "::",
-            stringify!(acc)
-        )
-    );
-}
-impl Default for cx_sha512_s {
-    fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
-    }
-}
-pub type cx_sha512_t = cx_sha512_s;
-extern "C" {
-    pub fn cx_sha384_init(hash: *mut cx_sha512_t) -> cty::c_int;
-}
-extern "C" {
-    pub fn cx_sha512_init(hash: *mut cx_sha512_t) -> cty::c_int;
-}
-extern "C" {
-    pub fn cx_hash_sha512(
-        in_: *const cty::c_uchar,
-        len: cty::c_uint,
-        out: *mut cty::c_uchar,
-        out_len: cty::c_uint,
-    ) -> cty::c_int;
-}
-#[repr(C)]
 #[repr(align(8))]
 #[derive(Copy, Clone)]
 pub struct cx_sha3_s {
@@ -2580,6 +2499,87 @@ extern "C" {
         hash: *mut cx_sha3_t,
         size: cty::c_uint,
         out_length: cty::c_uint,
+    ) -> cty::c_int;
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct cx_sha512_s {
+    pub header: cx_hash_header_s,
+    pub blen: cty::c_uint,
+    pub block: [cty::c_uchar; 128usize],
+    pub acc: [cty::c_uchar; 64usize],
+}
+#[test]
+fn bindgen_test_layout_cx_sha512_s() {
+    assert_eq!(
+        ::core::mem::size_of::<cx_sha512_s>(),
+        204usize,
+        concat!("Size of: ", stringify!(cx_sha512_s))
+    );
+    assert_eq!(
+        ::core::mem::align_of::<cx_sha512_s>(),
+        4usize,
+        concat!("Alignment of ", stringify!(cx_sha512_s))
+    );
+    assert_eq!(
+        unsafe { &(*(::core::ptr::null::<cx_sha512_s>())).header as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cx_sha512_s),
+            "::",
+            stringify!(header)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::core::ptr::null::<cx_sha512_s>())).blen as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cx_sha512_s),
+            "::",
+            stringify!(blen)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::core::ptr::null::<cx_sha512_s>())).block as *const _ as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cx_sha512_s),
+            "::",
+            stringify!(block)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::core::ptr::null::<cx_sha512_s>())).acc as *const _ as usize },
+        140usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cx_sha512_s),
+            "::",
+            stringify!(acc)
+        )
+    );
+}
+impl Default for cx_sha512_s {
+    fn default() -> Self {
+        unsafe { ::core::mem::zeroed() }
+    }
+}
+pub type cx_sha512_t = cx_sha512_s;
+extern "C" {
+    pub fn cx_sha384_init(hash: *mut cx_sha512_t) -> cty::c_int;
+}
+extern "C" {
+    pub fn cx_sha512_init(hash: *mut cx_sha512_t) -> cty::c_int;
+}
+extern "C" {
+    pub fn cx_hash_sha512(
+        in_: *const cty::c_uchar,
+        len: cty::c_uint,
+        out: *mut cty::c_uchar,
+        out_len: cty::c_uint,
     ) -> cty::c_int;
 }
 pub const BLAKE2B_BLOCKBYTES: blake2b_constant = 128;
@@ -5352,6 +5352,29 @@ extern "C" {
     ) -> cty::c_int;
 }
 extern "C" {
+    pub fn cx_ecschnorr_sign(
+        pvkey: *const cx_ecfp_private_key_t,
+        mode: cty::c_int,
+        hashID: cx_md_t,
+        msg: *const cty::c_uchar,
+        msg_len: cty::c_uint,
+        sig: *mut cty::c_uchar,
+        sig_len: cty::c_uint,
+        info: *mut cty::c_uint,
+    ) -> cty::c_int;
+}
+extern "C" {
+    pub fn cx_ecschnorr_verify(
+        pukey: *const cx_ecfp_public_key_t,
+        mode: cty::c_int,
+        hashID: cx_md_t,
+        msg: *const cty::c_uchar,
+        msg_len: cty::c_uint,
+        sig: *const cty::c_uchar,
+        sig_len: cty::c_uint,
+    ) -> cty::c_int;
+}
+extern "C" {
     pub fn cx_edward_compress_point(curve: cx_curve_t, P: *mut cty::c_uchar, P_len: cty::c_uint);
 }
 extern "C" {
@@ -5391,29 +5414,6 @@ extern "C" {
         hash_len: cty::c_uint,
         ctx: *const cty::c_uchar,
         ctx_len: cty::c_uint,
-        sig: *const cty::c_uchar,
-        sig_len: cty::c_uint,
-    ) -> cty::c_int;
-}
-extern "C" {
-    pub fn cx_ecschnorr_sign(
-        pvkey: *const cx_ecfp_private_key_t,
-        mode: cty::c_int,
-        hashID: cx_md_t,
-        msg: *const cty::c_uchar,
-        msg_len: cty::c_uint,
-        sig: *mut cty::c_uchar,
-        sig_len: cty::c_uint,
-        info: *mut cty::c_uint,
-    ) -> cty::c_int;
-}
-extern "C" {
-    pub fn cx_ecschnorr_verify(
-        pukey: *const cx_ecfp_public_key_t,
-        mode: cty::c_int,
-        hashID: cx_md_t,
-        msg: *const cty::c_uchar,
-        msg_len: cty::c_uint,
         sig: *const cty::c_uchar,
         sig_len: cty::c_uint,
     ) -> cty::c_int;

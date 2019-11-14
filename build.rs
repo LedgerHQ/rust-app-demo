@@ -6,7 +6,7 @@ use std::io::Write;
 use std::path::Path;
 
 fn main() {
-    let bolos_sdk = env::var("BOLOS_SDK").unwrap_or("./nanosdk_1.6/".to_string());
+    let bolos_sdk = env::var("BOLOS_SDK").unwrap_or("./nanos-secure-sdk/".to_string());
     let gcc_toolchain = env::var("GCC_PATH").expect("Please specify a valid GCC toolchain in your GCC_PATH environment variable");
 
     #[cfg(windows)]
