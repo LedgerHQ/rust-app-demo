@@ -56,5 +56,3 @@ The goal would be to reduce the C part as much as possible, and make every featu
 There are some parts that could be simplified in `build.rs` also.
 
 Lots of code could be reused from this great project: [Rust BOLOS 3rd party SDK](https://github.com/roosmaa/bolos-rs) by @roosmaa which unfortunately does not seem to be functioning or maintained. 
-
-.
