@@ -21,7 +21,7 @@ You can build on either Windows or Linux with a simple `cargo build` or `cargo b
 If you want to use a specific SDK (once you have generated the bindings), use:
 `export BOLOS_SDK=/path/to/sdk/; cargo build`
 
-By default, `nanosdk_1.6` will be used if `BOLOS_SDK` is not specified.
+By default, the SDK available as a submodule in this project will be used if `BOLOS_SDK` is not specified.
 
 ## Testing
 
