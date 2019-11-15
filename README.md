@@ -35,7 +35,7 @@ There is a small test script that sends some of the available commands in `test/
 
 ## Generating the bindings 
 
-Pregenerated bindings to the sdk located in `nanosdk_1.6` are already available for this project (in `./src/bindings.rs`).
+Pregenerated bindings to the sdk as a subrepo are already available for this project (in `./src/bindings.rs`).
 
 If you want to use another SDK, you can use `bindgen`: 
 
