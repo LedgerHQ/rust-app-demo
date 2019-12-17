@@ -2054,9 +2054,51 @@ fn bindgen_test_layout_SysTick_Type() {
 extern "C" {
     pub fn pic(linked_address: cty::c_uint) -> cty::c_uint;
 }
-extern "C" {
-    pub static mut G_io_apdu_buffer: [cty::c_uchar; 260usize];
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct apdu_buffer_s {
+    pub buf: *mut u8,
+    pub len: u16,
 }
+#[test]
+fn bindgen_test_layout_apdu_buffer_s() {
+    assert_eq!(
+        ::core::mem::size_of::<apdu_buffer_s>(),
+        8usize,
+        concat!("Size of: ", stringify!(apdu_buffer_s))
+    );
+    assert_eq!(
+        ::core::mem::align_of::<apdu_buffer_s>(),
+        4usize,
+        concat!("Alignment of ", stringify!(apdu_buffer_s))
+    );
+    assert_eq!(
+        unsafe { &(*(::core::ptr::null::<apdu_buffer_s>())).buf as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(apdu_buffer_s),
+            "::",
+            stringify!(buf)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::core::ptr::null::<apdu_buffer_s>())).len as *const _ as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(apdu_buffer_s),
+            "::",
+            stringify!(len)
+        )
+    );
+}
+impl Default for apdu_buffer_s {
+    fn default() -> Self {
+        unsafe { ::core::mem::zeroed() }
+    }
+}
+pub type apdu_buffer_t = apdu_buffer_s;
 extern "C" {
     pub fn app_main();
 }
@@ -2104,7 +2146,11 @@ extern "C" {
     pub fn halt();
 }
 extern "C" {
-    pub fn io_exchange(channel_and_flags: cty::c_uchar, tx_len: cty::c_ushort) -> cty::c_ushort;
+    pub fn io_exchange(
+        channel_and_flags: cty::c_uchar,
+        apdu_buffer: apdu_buffer_t,
+        tx_len: cty::c_ushort,
+    ) -> cty::c_ushort;
 }
 pub const IO_APDU_MEDIA_NONE: io_apdu_media_t = 0;
 pub const IO_APDU_MEDIA_USB_HID: io_apdu_media_t = 1;
@@ -7164,7 +7210,7 @@ extern "C" {
     pub fn os_ux_read_parameters(params: *mut bolos_ux_params_t);
 }
 extern "C" {
-    pub fn os_ux_blocking(params: *mut bolos_ux_params_t) -> cty::c_uint;
+    pub fn os_ux_blocking(params: *mut bolos_ux_params_t, arg1: apdu_buffer_t) -> cty::c_uint;
 }
 extern "C" {
     pub fn os_lib_call(call_parameters: *mut cty::c_uint);
@@ -9509,10 +9555,14 @@ extern "C" {
     pub fn io_seproxyhal_init_button();
 }
 extern "C" {
-    pub fn io_exchange_al(channel_and_flags: cty::c_uchar, tx_len: cty::c_ushort) -> cty::c_ushort;
+    pub fn io_exchange_al(
+        channel_and_flags: cty::c_uchar,
+        tx_len: cty::c_ushort,
+        arg1: apdu_buffer_t,
+    ) -> cty::c_ushort;
 }
 extern "C" {
-    pub fn os_io_seproxyhal_get_app_name_and_version() -> cty::c_uint;
+    pub fn os_io_seproxyhal_get_app_name_and_version(arg1: apdu_buffer_t) -> cty::c_uint;
 }
 extern "C" {
     pub fn USB_power(enabled: cty::c_uchar);
@@ -9527,7 +9577,7 @@ extern "C" {
     pub fn io_seproxyhal_get_ep_rx_size(epnum: u8) -> u16;
 }
 extern "C" {
-    pub fn io_seproxyhal_handle_event() -> cty::c_uint;
+    pub fn io_seproxyhal_handle_event(arg1: apdu_buffer_t) -> cty::c_uint;
 }
 extern "C" {
     pub fn io_seproxyhal_general_status();
@@ -9705,5 +9755,5 @@ extern "C" {
     pub fn io_seproxyhal_disable_ble();
 }
 extern "C" {
-    pub fn io_seproxyhal_io_heartbeat();
+    pub fn io_seproxyhal_io_heartbeat(arg1: apdu_buffer_t);
 }

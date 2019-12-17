@@ -13,13 +13,21 @@ use bindings::*;
 
 use core::panic::PanicInfo;
 
+/// In case of runtime problems,
+/// return an internal error and exit
+/// the app
 #[panic_handler]
 fn panic(_: &PanicInfo) -> ! {
+    let mut comm = io::Comm::new();
+    comm.set_status_word(io::StatusWords::InternalError);
+    comm.io_exch(0);
+    unsafe { os_sched_exit(1) };
     loop {}
 }
 
 
-// Example crypto call
+/// Example crypto call
+/// safe (?) wrapper
 fn sha256(m: &[u8]) -> [u8; 32] {
     let mut out = [0u8; 32];
     unsafe {
@@ -30,53 +38,46 @@ fn sha256(m: &[u8]) -> [u8; 32] {
 
 #[no_mangle]
 extern "C" fn sample_main() {
-    let mut tx = 0u16;
+    let mut comm = io::Comm::new();
     let mut flags = 0u8;
 
     loop {
-        let mut rx = tx;
-        tx = 0;
-
-        rx = io::io_exch(flags, rx);
+        comm.io_exch(flags);
         flags = 0;
 
-        if rx == 0 {
-            tx = io::set_status_word(tx, io::StatusWords::NothingReceived);
+        if comm.rx == 0 {
+            comm.set_status_word(io::StatusWords::NothingReceived);
             continue;
         }
 
-        let (cla, ins) = io::get_cla_ins();
+        let (cla, ins) = comm.get_cla_ins();
 
         if cla != 0x80 {
-            tx = io::set_status_word(tx, io::StatusWords::BadCLA);
+            comm.set_status_word(io::StatusWords::BadCLA);
             continue;
         }
 
-        tx = match ins {
+        match ins {
             0x00 => {
                 flags |= IO_RESET_AFTER_REPLIED as u8;
-                io::set_status_word(tx, io::StatusWords::OK)
+                comm.set_status_word(io::StatusWords::OK)
             },
-            0x01 => io::set_status_word(tx, io::StatusWords::OK),
+            0x01 => comm.set_status_word(io::StatusWords::OK),
             0x02 => {
-                tx = rx;
-                io::set_status_word(tx, io::StatusWords::OK)
+                comm.tx = comm.rx;
+                comm.set_status_word(io::StatusWords::OK)
             },
             0x03 => {
-                let len = unsafe{ u16::from_le_bytes([G_io_apdu_buffer[2], G_io_apdu_buffer[3]]) };
-                let buf: &[u8] = unsafe{ &G_io_apdu_buffer[4..len as usize] };
-                let out = sha256(buf);
-
+                let len = u16::from_le_bytes([comm[2], comm[3]]) as usize;
+                let out = sha256(&comm.get(4, len));
+                
                 for (i, e) in out.iter().enumerate() {
-                    unsafe { G_io_apdu_buffer[i] = *e };
+                    comm[i] = *e;
                 }
-                io::set_status_word(32, io::StatusWords::OK)
+                comm.set_status_word(io::StatusWords::OK)
             },
-            0xff => {
-                unsafe { os_sched_exit(0) };
-                0
-            },
-            _ => io::set_status_word(tx, io::StatusWords::Unknown),
+            0xff => {unsafe { os_sched_exit(0) };},
+            _ => comm.set_status_word(io::StatusWords::Unknown),
         };
     }
 }

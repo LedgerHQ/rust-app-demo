@@ -12,14 +12,16 @@ CMDS = [
     "80032000" + "bb"*32,
     "7700",
     "806600",
-    "FF00"
+    "FF00",
+    "8003ff02" + "cc"*32,
 ]
 
-d = getDongle(debug=True)
+d = getDongle(port=1237, debug=True)
 for cmd in map(unhexlify,CMDS):
-    r = b'' 
+    r = None 
     try:
         r = d.exchange(cmd, 2)
     except Exception as e:
         print(e)
-    print("Response : ", hexlify(r))
+    if r is not None: 
+        print("Response : ", hexlify(r))
