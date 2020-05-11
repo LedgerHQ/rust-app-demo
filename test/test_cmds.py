@@ -16,7 +16,7 @@ CMDS = [
     "8003ff02" + "cc"*32,
 ]
 
-d = getDongle(port=1237, debug=True)
+d = getDongle(port=9999, debug=True)
 for cmd in map(unhexlify,CMDS):
     r = None 
     try:
