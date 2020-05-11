@@ -10,17 +10,12 @@ fn main() {
     let gcc_toolchain = env::var("GCC_PATH").expect("Please specify a valid GCC toolchain in your GCC_PATH environment variable");
 
     #[cfg(windows)]
-    let output = Command::new("python").arg(&format!("./{}/icon3.py", bolos_sdk))
-                          .arg(&format!("{}/lib_ux/glyphs/icon_down.gif", bolos_sdk))
-                          .arg(&format!("{}/lib_ux/glyphs/icon_left.gif", bolos_sdk))
-                          .arg(&format!("{}/lib_ux/glyphs/icon_right.gif", bolos_sdk))
-                          .arg(&format!("{}/lib_ux/glyphs/icon_up.gif", bolos_sdk))
-                          .arg("--glyphcfile")
-                          .output()
-                          .expect("failed"); 
+    let py_cmd = "python";
 
     #[cfg(unix)]
-    let output = Command::new(&format!("./{}/icon3.py", bolos_sdk))
+    let py_cmd = "python3";
+
+    let output = Command::new(py_cmd).arg(&format!("./{}/icon3.py", bolos_sdk))
                           .arg(&format!("{}/lib_ux/glyphs/icon_down.gif", bolos_sdk))
                           .arg(&format!("{}/lib_ux/glyphs/icon_left.gif", bolos_sdk))
                           .arg(&format!("{}/lib_ux/glyphs/icon_right.gif", bolos_sdk))
@@ -37,7 +32,7 @@ fn main() {
 
     println!("{:?}", output.stderr);
 
-    let output = Command::new("python").arg(&format!("{}/icon3.py", bolos_sdk))
+    let output = Command::new(py_cmd).arg(&format!("{}/icon3.py", bolos_sdk))
                           .arg(&format!("{}/lib_ux/glyphs/icon_down.gif", bolos_sdk))
                           .arg(&format!("{}/lib_ux/glyphs/icon_left.gif", bolos_sdk))
                           .arg(&format!("{}/lib_ux/glyphs/icon_right.gif", bolos_sdk))
@@ -45,7 +40,7 @@ fn main() {
                           .arg("--glyphcheader")
                           .output()
                           .expect("failed"); 
-     
+
     let dest_path = Path::new(&main_path);
     let mut f = File::create(&dest_path.join("glyphs.h")).unwrap();
     f.write_all(&output.stdout).unwrap();
