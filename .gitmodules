@@ -1,3 +1,5 @@
 [submodule "nanos-secure-sdk"]
 	path = nanos-secure-sdk
 	url = https://github.com/yhql/nanos-secure-sdk
+	branch = master
+	
