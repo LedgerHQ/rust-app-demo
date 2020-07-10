@@ -6,13 +6,12 @@ This project allows you to develop an app for Nano S in Rust.
 
 ## Installation
 
-Installation requires adding a toolchain to your Rust installation, and both Clang and arm-gcc.
+Installation requires adding a toolchain to your Rust installation, and both Clang and arm-none-eabi-gcc.
 The minimum required rustc version is 1.40.0.
 
 - `rustup target add thumbv6m-none-eabi`
 - install [Clang](http://releases.llvm.org/download.html).
 - install an [ARM GCC toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads)
-- set a `GCC_PATH` environment variable to point to arm-gcc's folder
 
 ## Building
 
@@ -27,7 +26,7 @@ By default, the SDK available as a submodule in this project will be used if `BO
 
 One can for example use [speculos](https://github.com/LedgerHQ/speculos)
 
-`cargo run` defaults to running speculos on the generated binary with the appropriate flags.
+`cargo run` defaults to running speculos on the generated binary with the appropriate flags, if `speculos.py` is in your `PATH`.
 
 On a real device, you can use the loading script `load.py`.
 
