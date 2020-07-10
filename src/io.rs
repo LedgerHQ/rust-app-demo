@@ -10,7 +10,6 @@ pub enum StatusWords {
     InternalError = 0x77aa,
 }
 
-#[derive(Copy, Clone)]
 pub struct Comm {
     pub apduBuffer: [u8; 260],
     pub rx: usize,
@@ -19,15 +18,19 @@ pub struct Comm {
 
 impl Comm {
     pub fn new() -> Comm {
-       Comm { apduBuffer: [0u8; 260], rx: 0, tx: 0 } 
+        Comm {
+            apduBuffer: [0u8; 260],
+            rx: 0,
+            tx: 0,
+        }
     }
 
     pub fn io_exch(&mut self, flags: u8) {
-        let apdu_buf = apdu_buffer_t {
-                            buf: self.apduBuffer.as_mut_ptr(),
-                            len: self.apduBuffer.len() as u16
-                    };
-        self.rx = unsafe{ io_exchange(flags, apdu_buf, self.tx as u16) } as usize;
+        let mut apdu_buf = apdu_buffer_t {
+            buf: self.apduBuffer.as_mut_ptr(),
+            len: 260,
+        };
+        self.rx = unsafe{ io_exchange(flags, &mut apdu_buf, self.tx as u16) } as usize;
         self.tx = 0;
     }
 
@@ -44,6 +47,13 @@ impl Comm {
     pub fn get(&self, start: usize, end: usize) -> &[u8] {
         &self.apduBuffer[start..end]
     }
+
+    pub fn append(&mut self, m: &[u8]) {
+        for c in m.iter() {
+            self.apduBuffer[self.tx] = *c;
+            self.tx += 1;
+        }
+    }
 }
 
 impl Index<usize> for Comm {
@@ -55,19 +65,19 @@ impl Index<usize> for Comm {
 
 impl IndexMut<usize> for Comm {
     fn index_mut(&mut self, idx: usize) -> &mut Self::Output {
-        self.tx += 1;
+        self.tx = idx.max(self.tx);
         &mut self.apduBuffer[idx]
     }
 }
 
 #[no_mangle]
-pub extern "C" fn io_exchange_al(channel: u8, tx_len: u16, apdubuf: apdu_buffer_t) -> u16 {
+pub extern "C" fn io_exchange_al(channel: u8, tx_len: u16, apdubuf: *mut u8) -> u16 {
     if channel == CHANNEL_SPI as u8 {
         if tx_len != 0 {
-            unsafe{ io_seph_recv(apdubuf.buf, tx_len, 0) };
-            return 1
+            unsafe { io_seph_recv(apdubuf, tx_len, 0) };
+            return 1;
         } else {
-            return unsafe{ io_seph_recv(apdubuf.buf, 256, 0) };
+            return unsafe { io_seph_recv(apdubuf, 256, 0) };
         }
     } else {
         return 0;

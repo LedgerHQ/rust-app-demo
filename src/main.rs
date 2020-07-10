@@ -1,6 +1,5 @@
 #![no_std]
 #![no_main]
-#![feature(asm)]
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
 #![allow(non_camel_case_types)]
@@ -25,6 +24,9 @@ fn panic(_: &PanicInfo) -> ! {
     loop {}
 }
 
+#[no_mangle]
+#[used]
+static mut G_io_seproxyhal_spi_buffer: [u8; 128] = [0u8; 128];
 
 /// Example crypto call
 /// safe (?) wrapper
@@ -61,27 +63,25 @@ extern "C" fn sample_main() {
             0x00 => {
                 flags |= IO_RESET_AFTER_REPLIED as u8;
                 comm.set_status_word(io::StatusWords::OK)
-            },
+            }
             0x01 => comm.set_status_word(io::StatusWords::OK),
             0x02 => {
                 comm.tx = comm.rx;
                 comm.set_status_word(io::StatusWords::OK)
-            },
+            }
             0x03 => {
                 let len = u16::from_le_bytes([comm[2], comm[3]]) as usize;
                 let out = sha256(&comm.get(4, len));
-                
-                for (i, e) in out.iter().enumerate() {
-                    comm[i] = *e;
-                }
+                comm.append(&out);
                 comm.set_status_word(io::StatusWords::OK)
-            },
-            0xff => {unsafe { os_sched_exit(0) };},
+            }
+            0xff => {
+                unsafe { os_sched_exit(0) };
+            }
             _ => comm.set_status_word(io::StatusWords::Unknown),
         };
     }
 }
-
 
 #[no_mangle]
 extern "C" {

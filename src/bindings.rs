@@ -94,6 +94,7 @@ pub const NVM_ERASED_WORD_VALUE: u32 = 4294967295;
 pub const _STDINT_H: u32 = 1;
 pub const _FEATURES_H: u32 = 1;
 pub const _DEFAULT_SOURCE: u32 = 1;
+pub const __GLIBC_USE_ISOC2X: u32 = 0;
 pub const __USE_ISOC11: u32 = 1;
 pub const __USE_ISOC99: u32 = 1;
 pub const __USE_ISOC95: u32 = 1;
@@ -111,29 +112,35 @@ pub const __USE_MISC: u32 = 1;
 pub const __USE_ATFILE: u32 = 1;
 pub const __USE_FORTIFY_LEVEL: u32 = 0;
 pub const __GLIBC_USE_DEPRECATED_GETS: u32 = 0;
+pub const __GLIBC_USE_DEPRECATED_SCANF: u32 = 0;
 pub const _STDC_PREDEF_H: u32 = 1;
 pub const __STDC_IEC_559__: u32 = 1;
 pub const __STDC_IEC_559_COMPLEX__: u32 = 1;
 pub const __STDC_ISO_10646__: u32 = 201706;
-pub const __STDC_NO_THREADS__: u32 = 1;
 pub const __GNU_LIBRARY__: u32 = 6;
 pub const __GLIBC__: u32 = 2;
-pub const __GLIBC_MINOR__: u32 = 27;
+pub const __GLIBC_MINOR__: u32 = 31;
 pub const _SYS_CDEFS_H: u32 = 1;
 pub const __glibc_c99_flexarr_available: u32 = 1;
 pub const __WORDSIZE: u32 = 32;
 pub const __WORDSIZE32_SIZE_ULONG: u32 = 0;
 pub const __WORDSIZE32_PTRDIFF_LONG: u32 = 0;
 pub const __WORDSIZE_TIME64_COMPAT32: u32 = 0;
+pub const __LONG_DOUBLE_USES_FLOAT128: u32 = 0;
 pub const __HAVE_GENERIC_SELECTION: u32 = 1;
 pub const __GLIBC_USE_LIB_EXT2: u32 = 0;
 pub const __GLIBC_USE_IEC_60559_BFP_EXT: u32 = 0;
+pub const __GLIBC_USE_IEC_60559_BFP_EXT_C2X: u32 = 0;
 pub const __GLIBC_USE_IEC_60559_FUNCS_EXT: u32 = 0;
+pub const __GLIBC_USE_IEC_60559_FUNCS_EXT_C2X: u32 = 0;
 pub const __GLIBC_USE_IEC_60559_TYPES_EXT: u32 = 0;
 pub const _BITS_TYPES_H: u32 = 1;
+pub const __TIMESIZE: u32 = 32;
 pub const _BITS_TYPESIZES_H: u32 = 1;
 pub const __RLIM_T_MATCHES_RLIM64_T: u32 = 0;
+pub const __STATFS_MATCHES_STATFS64: u32 = 0;
 pub const __FD_SETSIZE: u32 = 1024;
+pub const _BITS_TIME64_H: u32 = 1;
 pub const _BITS_WCHAR_H: u32 = 1;
 pub const _BITS_STDINT_INTN_H: u32 = 1;
 pub const _BITS_STDINT_UINTN_H: u32 = 1;
@@ -832,6 +839,18 @@ pub const BUTTON_EVT_FAST: u32 = 1073741824;
 pub const BUTTON_EVT_RELEASED: u32 = 2147483648;
 pub const UX_STACK_SLOT_COUNT: u32 = 1;
 pub const UX_STACK_SLOT_ARRAY_COUNT: u32 = 1;
+pub const GLYPH_icon_down_WIDTH: u32 = 7;
+pub const GLYPH_icon_down_HEIGHT: u32 = 4;
+pub const GLYPH_icon_down_BPP: u32 = 1;
+pub const GLYPH_icon_left_WIDTH: u32 = 4;
+pub const GLYPH_icon_left_HEIGHT: u32 = 7;
+pub const GLYPH_icon_left_BPP: u32 = 1;
+pub const GLYPH_icon_right_WIDTH: u32 = 4;
+pub const GLYPH_icon_right_HEIGHT: u32 = 7;
+pub const GLYPH_icon_right_BPP: u32 = 1;
+pub const GLYPH_icon_up_WIDTH: u32 = 7;
+pub const GLYPH_icon_up_HEIGHT: u32 = 4;
+pub const GLYPH_icon_up_BPP: u32 = 1;
 pub const IO_CACHE: u32 = 1;
 pub const NO_TIMEOUT: u32 = 0;
 pub const NonMaskableInt_IRQn: IRQn_Type = -14;
@@ -908,6 +927,7 @@ extern "C" {
 extern "C" {
     pub fn setjmp(__jmpb: *mut cty::c_uint) -> cty::c_int;
 }
+pub type size_t = cty::c_uint;
 pub type wchar_t = cty::c_uint;
 #[repr(C)]
 #[derive(Default, Copy, Clone)]
@@ -964,19 +984,27 @@ pub type __int32_t = cty::c_int;
 pub type __uint32_t = cty::c_uint;
 pub type __int64_t = cty::c_longlong;
 pub type __uint64_t = cty::c_ulonglong;
+pub type __int_least8_t = __int8_t;
+pub type __uint_least8_t = __uint8_t;
+pub type __int_least16_t = __int16_t;
+pub type __uint_least16_t = __uint16_t;
+pub type __int_least32_t = __int32_t;
+pub type __uint_least32_t = __uint32_t;
+pub type __int_least64_t = __int64_t;
+pub type __uint_least64_t = __uint64_t;
 pub type __quad_t = cty::c_longlong;
 pub type __u_quad_t = cty::c_ulonglong;
 pub type __intmax_t = cty::c_longlong;
 pub type __uintmax_t = cty::c_ulonglong;
-pub type __dev_t = __u_quad_t;
+pub type __dev_t = __uint64_t;
 pub type __uid_t = cty::c_uint;
 pub type __gid_t = cty::c_uint;
 pub type __ino_t = cty::c_ulong;
-pub type __ino64_t = __u_quad_t;
+pub type __ino64_t = __uint64_t;
 pub type __mode_t = cty::c_uint;
 pub type __nlink_t = cty::c_uint;
 pub type __off_t = cty::c_long;
-pub type __off64_t = __quad_t;
+pub type __off64_t = __int64_t;
 pub type __pid_t = cty::c_int;
 #[repr(C)]
 #[derive(Default, Copy, Clone)]
@@ -1008,7 +1036,7 @@ fn bindgen_test_layout___fsid_t() {
 }
 pub type __clock_t = cty::c_long;
 pub type __rlim_t = cty::c_ulong;
-pub type __rlim64_t = __u_quad_t;
+pub type __rlim64_t = __uint64_t;
 pub type __id_t = cty::c_uint;
 pub type __time_t = cty::c_long;
 pub type __useconds_t = cty::c_uint;
@@ -1019,11 +1047,11 @@ pub type __clockid_t = cty::c_int;
 pub type __timer_t = *mut cty::c_void;
 pub type __blksize_t = cty::c_long;
 pub type __blkcnt_t = cty::c_long;
-pub type __blkcnt64_t = __quad_t;
+pub type __blkcnt64_t = __int64_t;
 pub type __fsblkcnt_t = cty::c_ulong;
-pub type __fsblkcnt64_t = __u_quad_t;
+pub type __fsblkcnt64_t = __uint64_t;
 pub type __fsfilcnt_t = cty::c_ulong;
-pub type __fsfilcnt64_t = __u_quad_t;
+pub type __fsfilcnt64_t = __uint64_t;
 pub type __fsword_t = cty::c_int;
 pub type __ssize_t = cty::c_int;
 pub type __syscall_slong_t = cty::c_long;
@@ -1033,14 +1061,15 @@ pub type __caddr_t = *mut cty::c_char;
 pub type __intptr_t = cty::c_int;
 pub type __socklen_t = cty::c_uint;
 pub type __sig_atomic_t = cty::c_int;
-pub type int_least8_t = cty::c_schar;
-pub type int_least16_t = cty::c_short;
-pub type int_least32_t = cty::c_int;
-pub type int_least64_t = cty::c_longlong;
-pub type uint_least8_t = cty::c_uchar;
-pub type uint_least16_t = cty::c_ushort;
-pub type uint_least32_t = cty::c_uint;
-pub type uint_least64_t = cty::c_ulonglong;
+pub type __time64_t = __int64_t;
+pub type int_least8_t = __int_least8_t;
+pub type int_least16_t = __int_least16_t;
+pub type int_least32_t = __int_least32_t;
+pub type int_least64_t = __int_least64_t;
+pub type uint_least8_t = __uint_least8_t;
+pub type uint_least16_t = __uint_least16_t;
+pub type uint_least32_t = __uint_least32_t;
+pub type uint_least64_t = __uint_least64_t;
 pub type int_fast8_t = cty::c_schar;
 pub type int_fast16_t = cty::c_int;
 pub type int_fast32_t = cty::c_int;
@@ -2148,7 +2177,7 @@ extern "C" {
 extern "C" {
     pub fn io_exchange(
         channel_and_flags: cty::c_uchar,
-        apdu_buffer: apdu_buffer_t,
+        apdu_buffer: *mut apdu_buffer_t,
         tx_len: cty::c_ushort,
     ) -> cty::c_ushort;
 }
@@ -2438,7 +2467,6 @@ extern "C" {
     ) -> cty::c_int;
 }
 #[repr(C)]
-#[repr(align(8))]
 #[derive(Copy, Clone)]
 pub struct cx_sha3_s {
     pub header: cx_hash_header_s,
@@ -2446,7 +2474,6 @@ pub struct cx_sha3_s {
     pub block_size: cty::c_uint,
     pub blen: cty::c_uint,
     pub block: [cty::c_uchar; 200usize],
-    pub __bindgen_padding_0: u32,
     pub acc: [uint64bits_t; 25usize],
 }
 #[test]
@@ -2635,17 +2662,15 @@ pub const BLAKE2B_SALTBYTES: blake2b_constant = 16;
 pub const BLAKE2B_PERSONALBYTES: blake2b_constant = 16;
 pub type blake2b_constant = u8;
 #[repr(C)]
-#[repr(align(8))]
 #[derive(Copy, Clone)]
 pub struct blake2b_state__ {
     pub h: [u64; 8usize],
     pub t: [u64; 2usize],
     pub f: [u64; 2usize],
     pub buf: [u8; 128usize],
-    pub buflen: usize,
-    pub outlen: usize,
+    pub buflen: size_t,
+    pub outlen: size_t,
     pub last_node: u8,
-    pub __bindgen_padding_0: [u8; 7usize],
 }
 #[test]
 fn bindgen_test_layout_blake2b_state__() {
@@ -2741,7 +2766,6 @@ pub type blake2b_state = blake2b_state__;
 pub struct cx_blake2b_s {
     pub header: cx_hash_header_s,
     pub output_size: cty::c_uint,
-    pub __bindgen_padding_0: u32,
     pub ctx: blake2b_state__,
 }
 #[test]
@@ -2818,7 +2842,6 @@ pub struct hashState_s {
     pub columns: cty::c_uint,
     pub rounds: cty::c_uint,
     pub statesize: cty::c_uint,
-    pub __bindgen_padding_0: u32,
 }
 #[test]
 fn bindgen_test_layout_hashState_s() {
@@ -2924,7 +2947,6 @@ pub type hashState = hashState_s;
 pub struct cx_groestl_s {
     pub header: cx_hash_header_s,
     pub output_size: cty::c_uint,
-    pub __bindgen_padding_0: u32,
     pub ctx: hashState_s,
 }
 #[test]
@@ -5475,13 +5497,13 @@ extern "C" {
     ) -> cty::c_int;
 }
 extern "C" {
-    pub fn cx_crc16(buffer: *const cty::c_void, len: usize) -> cty::c_ushort;
+    pub fn cx_crc16(buffer: *const cty::c_void, len: size_t) -> cty::c_ushort;
 }
 extern "C" {
     pub fn cx_crc16_update(
         crc: cty::c_ushort,
         buffer: *const cty::c_void,
-        len: usize,
+        len: size_t,
     ) -> cty::c_ushort;
 }
 extern "C" {
@@ -7210,7 +7232,7 @@ extern "C" {
     pub fn os_ux_read_parameters(params: *mut bolos_ux_params_t);
 }
 extern "C" {
-    pub fn os_ux_blocking(params: *mut bolos_ux_params_t, arg1: apdu_buffer_t) -> cty::c_uint;
+    pub fn os_ux_blocking(params: *mut bolos_ux_params_t, arg1: *mut apdu_buffer_t) -> cty::c_uint;
 }
 extern "C" {
     pub fn os_lib_call(call_parameters: *mut cty::c_uint);
@@ -9527,8 +9549,44 @@ extern "C" {
     ) -> cty::c_uint;
 }
 extern "C" {
-    pub static mut G_io_seproxyhal_spi_buffer: [cty::c_uchar; 128usize];
+    pub static mut C_icon_down_colors: [cty::c_uint; 0usize];
 }
+extern "C" {
+    pub static mut C_icon_down_bitmap: [cty::c_uchar; 0usize];
+}
+extern "C" {
+    pub static C_icon_down: bagl_icon_details_t;
+}
+extern "C" {
+    pub static mut C_icon_left_colors: [cty::c_uint; 0usize];
+}
+extern "C" {
+    pub static mut C_icon_left_bitmap: [cty::c_uchar; 0usize];
+}
+extern "C" {
+    pub static C_icon_left: bagl_icon_details_t;
+}
+extern "C" {
+    pub static mut C_icon_right_colors: [cty::c_uint; 0usize];
+}
+extern "C" {
+    pub static mut C_icon_right_bitmap: [cty::c_uchar; 0usize];
+}
+extern "C" {
+    pub static C_icon_right: bagl_icon_details_t;
+}
+extern "C" {
+    pub static mut C_icon_up_colors: [cty::c_uint; 0usize];
+}
+extern "C" {
+    pub static mut C_icon_up_bitmap: [cty::c_uchar; 0usize];
+}
+extern "C" {
+    pub static C_icon_up: bagl_icon_details_t;
+}
+// extern "C" {
+//     pub static mut G_io_seproxyhal_spi_buffer: [cty::c_uchar; 128usize];
+// }
 extern "C" {
     pub fn io_seph_send(buffer: *const cty::c_uchar, length: cty::c_ushort);
 }
@@ -9558,11 +9616,11 @@ extern "C" {
     pub fn io_exchange_al(
         channel_and_flags: cty::c_uchar,
         tx_len: cty::c_ushort,
-        arg1: apdu_buffer_t,
+        arg1: *mut cty::c_uchar,
     ) -> cty::c_ushort;
 }
 extern "C" {
-    pub fn os_io_seproxyhal_get_app_name_and_version(arg1: apdu_buffer_t) -> cty::c_uint;
+    pub fn os_io_seproxyhal_get_app_name_and_version(arg1: *mut apdu_buffer_t) -> cty::c_uint;
 }
 extern "C" {
     pub fn USB_power(enabled: cty::c_uchar);
@@ -9577,7 +9635,7 @@ extern "C" {
     pub fn io_seproxyhal_get_ep_rx_size(epnum: u8) -> u16;
 }
 extern "C" {
-    pub fn io_seproxyhal_handle_event(arg1: apdu_buffer_t) -> cty::c_uint;
+    pub fn io_seproxyhal_handle_event(arg1: *mut apdu_buffer_t) -> cty::c_uint;
 }
 extern "C" {
     pub fn io_seproxyhal_general_status();
@@ -9755,5 +9813,5 @@ extern "C" {
     pub fn io_seproxyhal_disable_ble();
 }
 extern "C" {
-    pub fn io_seproxyhal_io_heartbeat(arg1: apdu_buffer_t);
+    pub fn io_seproxyhal_io_heartbeat(arg1: *mut apdu_buffer_t);
 }
