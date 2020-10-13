@@ -1,3 +1,6 @@
+DEPRECATED: Now obsolete in favour of [this new demo](https://github.com/LedgerHQ/rust-app) that uses an improved structure and a Rust UI.
+
+
 # Rust bindings to the SDK and app
 
 Hybrid of Ledger's SDK that will allow incrementally replacing parts of the C SDK with safer Rust code.
